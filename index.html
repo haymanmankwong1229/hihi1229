@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>清單搜尋應用程式</title>
+  <!-- Ionic CDN -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    ion-content {
+      --padding-start: 16px;
+      --padding-end: 16px;
+      --padding-top: 16px;
+    }
+    ion-searchbar {
+      margin-bottom: 16px;
+    }
+    ion-list {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    ion-item {
+      --border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    /* 響應式設計：小螢幕調整 */
+    @media (max-width: 480px) {
+      ion-content {
+        --padding-start: 8px;
+        --padding-end: 8px;
+      }
+      ion-item {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <ion-app>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>我的清單應用</ion一天title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <!-- 搜尋欄 -->
+      <ion-searchbar placeholder="輸入關鍵字搜尋..." id="searchBar"></ion-searchbar>
+      <!-- 清單 -->
+      <ion-list id="itemList">
+        <ion-item>蘋果</ion-item>
+        <ion-item>香蕉</ion-item>
+        <ion-item>橘子</ion-item>
+        <ion-item>葡萄</ion-item>
+        <ion-item>芒果</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-app>
+
+  <script>
+    // 取得搜尋欄和清單元素
+    const searchBar = document.querySelector('#searchBar');
+    const itemList = document.querySelector('#itemList');
+    const items = itemList.querySelectorAll('ion-item');
+
+    // 儲存原始清單項目
+    const originalItems = Array.from(items).map(item => item.textContent);
+
+    // 搜尋功能的事件處理
+    searchBar.addEventListener('ionInput', (event) => {
+      const searchTerm = event.target.value.toLowerCase();
+      
+      // 清空當前清單
+      itemList.innerHTML = '';
+
+      // 過濾並顯示匹配的項目
+      originalItems.forEach(itemText => {
+        if (itemText.toLowerCase().includes(searchTerm)) {
+          const newItem = document.createElement('ion-item');
+          newItem.textContent = itemText;
+          itemList.appendChild(newItem);
+        }
+      });
+
+      // 如果搜尋欄為空，恢復原始清單
+      if (!searchTerm) {
+        originalItems.forEach(itemText => {
+          const newItem = document.createElement('ion-item');
+          newItem.textContent = itemText;
+          itemList.appendChild(newItem);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
